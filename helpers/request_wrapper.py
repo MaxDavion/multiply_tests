@@ -52,4 +52,4 @@ class ApiResponse(requests.Response):
 
     @allure.step('Проверить что сервис вернул "{body}"')
     def should_has_body(self, body):
-        assert self.text == str(body)
+        assert self.text == str(body), f'Ожидаемый результат "{body}". Полученный результат: "{self.text}"'
