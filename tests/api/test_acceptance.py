@@ -1,9 +1,9 @@
 from api import calculator_api
 import pytest
-from helpers.decorators import Test, Step, Check
-import allure
+from helpers.decorators import Test
 
-@Test('Сервис возвращает корректный результат умножения аргументов')
+
+@Test('Сервис возвращает корректный результат умножения аргументов', story='positive')
 @pytest.mark.parametrize('a, b, expected_result', [
     (0, 5, 0),
     (5, 0, 0),
@@ -15,14 +15,11 @@ import allure
     (100, 100, 10000)
 ])
 def test_service_return_result_of_multiply_arguments(a, b, expected_result):
-    with Step('Перемножаем числа "{a}" и "{b}"'):
         r = calculator_api.multiply(a, b)
-
-    with Check('Сервис возвращает результат, равный {expected_result}'):
-        assert int(r.text) == expected_result
+        r.should_has_body(expected_result)
 
 
-@Test('Сервис возвращает сообщение об ошибке если переданные аргументы не корректны.')
+@Test('Сервис возвращает сообщение об ошибке если переданные аргументы не корректны.', story='negative')
 @pytest.mark.parametrize('a, b', [
     (1.1, 1),
     (1, 1.1),
@@ -42,8 +39,5 @@ def test_service_return_result_of_multiply_arguments(a, b, expected_result):
     ("1", "-1"),
 ])
 def test_service_return_error_message_if_arguments_incorrect(a, b):
-    with Step('Перемножаем аргументы "{a}" и "{b}"'):
         r = calculator_api.multiply(a, b)
-
-    with Check('Сервис возвращает сообщение об ошибке'):
-        assert r.text == "Something went wrong :("
+        r.should_has_body("Something went wrong :(")

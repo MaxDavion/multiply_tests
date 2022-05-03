@@ -1,4 +1,4 @@
-import requests
+from helpers.request_wrapper import ApiRequest as requests
 import environment
 from ._base import api_method
 

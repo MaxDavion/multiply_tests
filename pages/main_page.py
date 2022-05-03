@@ -32,9 +32,11 @@ class MainPage:
             wait_until(lambda: self.get_result() == value)
             assert self.result_text.inner_text() == value
 
+    @allure.step('Проверить что присутствует сообщение об ошибке "{error_text}"')
+    def check_that_error_is(self, error_text):
+        assert self.error_text.inner_text() == error_text
+
     def get_result(self):
         self.page.wait_for_load_state("networkidle")
         return self.result_text.inner_text()
 
-    def get_error(self):
-        return self.error_text.inner_text()
